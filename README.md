@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HS Technologies
+
+Modern website for **Hina Shahrukh & Co** — a consulting company offering technology, advisory, and business services across 16+ countries.
+
+Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4, and Shadcn/ui.
+
+## Tech Stack
+
+| Layer       | Technology                                     |
+| ----------- | ---------------------------------------------- |
+| Framework   | Next.js 16 (App Router, React Compiler)        |
+| UI          | React 19, Shadcn/ui (New York), Radix UI       |
+| Styling     | Tailwind CSS 4, custom CSS variables/animations |
+| Icons       | Lucide React, custom origami-style SVGs         |
+| Map         | react-simple-maps                               |
+| Fonts       | Roboto, Roboto Slab, Lato (Google Fonts)        |
+| Language    | TypeScript 5 (strict mode)                      |
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Available Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start dev server         |
+| `npm run build` | Production build         |
+| `npm run start` | Serve production build   |
+| `npm run lint`  | Run ESLint               |
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/                        # Pages (App Router)
+│   ├── layout.tsx              # Root layout, fonts, metadata
+│   ├── page.tsx                # Homepage
+│   ├── values/                 # Values page
+│   ├── services/               # Services (placeholder)
+│   ├── contact/                # Contact (placeholder)
+│   ├── legal/                  # Legal (placeholder)
+│   └── privacy/                # Privacy Policy (placeholder)
+├── components/
+│   ├── layout/                 # Header & Footer
+│   ├── sections/               # Homepage sections
+│   │   ├── hero.tsx            # Hero with vision pillars
+│   │   ├── our-mark.tsx        # Global presence & world map
+│   │   ├── partners.tsx        # Partner/client logos
+│   │   ├── services.tsx        # Services grid (9 services)
+│   │   ├── core-values.tsx     # Company values & circle animation
+│   │   ├── quotes.tsx          # CEO & COO quotes
+│   │   └── contact.tsx         # Contact information
+│   ├── icons/                  # Logo, world map, service icons, partner logos
+│   └── ui/                     # Shadcn/ui primitives (Button, Sheet)
+└── lib/
+    ├── constants.ts            # Centralized site data
+    └── utils.ts                # Utility functions
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Homepage Sections
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Hero** — Tagline with vision pillars: Simple, Interoperable, Convenient
+2. **Our Mark** — Global presence highlighted on an interactive world map (16 countries)
+3. **Partners** — Logos of partner organizations and clients
+4. **Services** — Grid of 9 service areas with custom origami-style icons
+5. **Core Values** — Company philosophy with animated concentric circles
+6. **Quotes** — Leadership quotes from the CEO and COO
+7. **Contact** — Phone, email, and address
