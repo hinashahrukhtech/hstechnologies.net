@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { SERVICES } from "@/lib/constants";
 import { SERVICE_ICON_MAP } from "@/components/icons/service-icons";
 
@@ -16,6 +18,7 @@ export function ServicesSection() {
             return (
               <ServiceCard
                 key={service.id}
+                id={service.id}
                 title={service.title}
                 description={service.description}
                 icon={
@@ -33,28 +36,36 @@ export function ServicesSection() {
 }
 
 function ServiceCard({
+  id,
   title,
   description,
   icon,
 }: {
+  id: string;
   title: string;
   description: string;
   icon: React.ReactNode;
 }) {
   return (
-    <div className="px-2 sm:px-3 lg:px-0 lg:pr-[50px] text-center lg:text-left">
+    <Link
+      href={`/services/${id}`}
+      className="group block px-2 sm:px-3 lg:px-0 lg:pr-[50px] text-center lg:text-left"
+    >
       <div className="flex justify-center lg:justify-start mb-3 sm:mb-4">
         <div className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16">
           {icon}
         </div>
       </div>
-      <h3 className="font-sans text-lg sm:text-xl lg:text-2xl font-semibold text-white mb-2 sm:mb-3">
-        {title}
-      </h3>
+      <div className="flex items-center justify-center lg:justify-start gap-2 mb-2 sm:mb-3">
+        <h3 className="font-sans text-lg sm:text-xl lg:text-2xl font-semibold text-white group-hover:text-white/80 transition-colors">
+          {title}
+        </h3>
+        <ArrowRight className="w-4 h-4 text-white/0 group-hover:text-white/60 translate-x-0 group-hover:translate-x-1 transition-all duration-200" />
+      </div>
       <div className="w-full h-[2px] bg-hs-divider mb-3 sm:mb-4" />
       <p className="text-white font-light text-sm lg:text-base leading-[1.7]">
         {description}
       </p>
-    </div>
+    </Link>
   );
 }

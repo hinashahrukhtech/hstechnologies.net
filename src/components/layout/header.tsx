@@ -3,15 +3,19 @@
 import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 import { HSLogo } from "@/components/icons/logo";
-import { NAV_LINKS, SOCIAL_LINKS } from "@/lib/constants";
+import { NAV_LINKS, SOCIAL_LINKS, SERVICES } from "@/lib/constants";
 
 export function Header({ variant = "default" }: { variant?: "default" | "hero-inline" }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [servicesExpanded, setServicesExpanded] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  const close = useCallback(() => setIsOpen(false), []);
+  const close = useCallback(() => {
+    setIsOpen(false);
+    setServicesExpanded(false);
+  }, []);
 
   useEffect(() => setMounted(true), []);
 
@@ -46,7 +50,7 @@ export function Header({ variant = "default" }: { variant?: "default" | "hero-in
             onClick={close}
             aria-hidden="true"
           />
-          <nav className="absolute right-0 top-0 h-full w-[320px] max-w-[85vw] bg-white dark:bg-[#1a1c25] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+          <nav className="absolute right-0 top-0 h-full w-[320px] max-w-[85vw] bg-white dark:bg-[#1a1c25] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300 overflow-y-auto">
             <div className="flex justify-end p-6">
               <button
                 onClick={close}
@@ -57,16 +61,62 @@ export function Header({ variant = "default" }: { variant?: "default" | "hero-in
               </button>
             </div>
             <div className="flex flex-col px-8 gap-1">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="py-3 text-lg font-light font-slab text-gray-800 dark:text-gray-200 hover:text-[#BB0000] dark:hover:text-[#e04040] transition-colors border-b border-gray-100 dark:border-white/10"
-                  onClick={close}
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {NAV_LINKS.map((link) => {
+                if (link.label === "Services") {
+                  return (
+                    <div key={link.href}>
+                      <button
+                        onClick={() => setServicesExpanded((prev) => !prev)}
+                        className="w-full flex items-center justify-between py-3 text-lg font-light font-slab text-gray-800 dark:text-gray-200 hover:text-[#BB0000] dark:hover:text-[#e04040] transition-colors border-b border-gray-100 dark:border-white/10"
+                      >
+                        {link.label}
+                        <ChevronDown
+                          className={`w-4 h-4 text-gray-400 dark:text-gray-500 transition-transform duration-200 ${
+                            servicesExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                          servicesExpanded ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+                        }`}
+                      >
+                        <div className="pl-4 border-l-2 border-gray-100 dark:border-white/10 ml-1 mt-1 mb-2">
+                          <Link
+                            href="/services"
+                            className="block py-2 text-[13px] font-medium tracking-wide uppercase text-gray-400 dark:text-gray-500 hover:text-[#BB0000] dark:hover:text-[#e04040] transition-colors"
+                            onClick={close}
+                          >
+                            All Services
+                          </Link>
+                          {SERVICES.map((service) => (
+                            <Link
+                              key={service.id}
+                              href={`/services/${service.id}`}
+                              className="block py-2 text-[15px] font-light text-gray-600 dark:text-gray-400 hover:text-[#BB0000] dark:hover:text-[#e04040] transition-colors"
+                              onClick={close}
+                            >
+                              {service.title}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className="py-3 text-lg font-light font-slab text-gray-800 dark:text-gray-200 hover:text-[#BB0000] dark:hover:text-[#e04040] transition-colors border-b border-gray-100 dark:border-white/10"
+                    onClick={close}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </div>
             <div className="mt-auto px-8 pb-8">
               <div className="flex gap-4">
