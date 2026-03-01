@@ -1,7 +1,9 @@
 import Link from "next/link";
-import { ArrowUpRight, Download, ArrowRight } from "lucide-react";
+import { ArrowUpRight, ArrowRight, FileText } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
+import { REPORTS } from "@/lib/reports";
+import type { Report } from "@/lib/reports";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,102 +11,6 @@ export const metadata: Metadata = {
   description:
     "Explore research reports, whitepapers, and insights published by the Hina Shahrukh Technologies team across technology, innovation, and digital transformation.",
 };
-
-type Report = {
-  slug: string;
-  title: string;
-  summary: string;
-  category: string;
-  date: string;
-  readTime: string;
-  pdfUrl: string;
-  featured?: boolean;
-};
-
-const REPORTS: Report[] = [
-  {
-    slug: "digital-transformation-outlook-2026",
-    title: "Digital Transformation Outlook 2026",
-    summary:
-      "An in-depth analysis of emerging digital transformation trends across South Asia, examining how organisations are leveraging AI, cloud infrastructure, and automation to drive operational efficiency and competitive advantage.",
-    category: "Industry Analysis",
-    date: "January 2026",
-    readTime: "12 min",
-    pdfUrl: "#",
-    featured: true,
-  },
-  {
-    slug: "blockchain-supply-chain-integrity",
-    title: "Blockchain for Supply Chain Integrity",
-    summary:
-      "This report explores the practical applications of distributed ledger technology in ensuring transparency, traceability, and trust across complex supply chain networks in developing economies.",
-    category: "Whitepaper",
-    date: "November 2025",
-    readTime: "18 min",
-    pdfUrl: "#",
-    featured: true,
-  },
-  {
-    slug: "ai-workforce-readiness-assessment",
-    title: "AI Workforce Readiness Assessment",
-    summary:
-      "A comprehensive evaluation of workforce preparedness for AI adoption in Pakistan's technology sector, with actionable recommendations for upskilling and organisational restructuring.",
-    category: "Research",
-    date: "September 2025",
-    readTime: "15 min",
-    pdfUrl: "#",
-  },
-  {
-    slug: "cloud-migration-enterprise-guide",
-    title: "Enterprise Cloud Migration: A Strategic Guide",
-    summary:
-      "Practical guidance for mid-to-large enterprises planning cloud migration, covering infrastructure assessment, vendor selection, security considerations, and phased implementation strategies.",
-    category: "Whitepaper",
-    date: "July 2025",
-    readTime: "22 min",
-    pdfUrl: "#",
-  },
-  {
-    slug: "iot-agriculture-case-study",
-    title: "IoT in Precision Agriculture: A Case Study",
-    summary:
-      "Documenting the deployment of IoT sensor networks across agricultural operations in Punjab, this case study measures impact on crop yield, water conservation, and real-time monitoring capabilities.",
-    category: "Case Study",
-    date: "May 2025",
-    readTime: "10 min",
-    pdfUrl: "#",
-  },
-  {
-    slug: "cybersecurity-posture-sme-2025",
-    title: "Cybersecurity Posture of SMEs in Pakistan",
-    summary:
-      "An assessment of cybersecurity maturity among small and medium enterprises, identifying key vulnerabilities, threat vectors, and cost-effective mitigation strategies tailored to the local business landscape.",
-    category: "Research",
-    date: "March 2025",
-    readTime: "14 min",
-    pdfUrl: "#",
-  },
-  {
-    slug: "data-driven-decision-making",
-    title: "Data-Driven Decision Making in Public Sector",
-    summary:
-      "Exploring how government agencies and public institutions can adopt data analytics frameworks to improve service delivery, policy formulation, and resource allocation.",
-    category: "Industry Analysis",
-    date: "January 2025",
-    readTime: "16 min",
-    pdfUrl: "#",
-  },
-  {
-    slug: "fintech-regulatory-landscape",
-    title: "Fintech & the Evolving Regulatory Landscape",
-    summary:
-      "A review of regulatory developments shaping the fintech ecosystem in Pakistan and the broader MENA region, with analysis of compliance challenges and emerging opportunities for digital financial services.",
-    category: "Whitepaper",
-    date: "November 2024",
-    readTime: "20 min",
-    pdfUrl: "#",
-  },
-];
 
 export default function ReportsPage() {
   const featured = REPORTS.filter((r) => r.featured);
@@ -211,7 +117,7 @@ export default function ReportsPage() {
             <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">Title</span>
             <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">Category</span>
             <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">Date</span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20 text-right">PDF</span>
+            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20 text-right">View</span>
           </div>
 
           <div>
@@ -284,7 +190,10 @@ function FeaturedCard({
     >
       <div className="flex flex-col sm:flex-row gap-6 sm:gap-7 lg:gap-8">
         {/* Report cover */}
-        <div className="relative w-full sm:w-[200px] lg:w-[220px] shrink-0">
+        <Link
+          href={`/reports/${report.slug}`}
+          className="relative w-full sm:w-[200px] lg:w-[220px] shrink-0"
+        >
           <div
             className="relative aspect-[3/4] rounded-sm overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.12)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.4)] transition-transform duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.16)] dark:group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]"
             style={{
@@ -330,7 +239,7 @@ function FeaturedCard({
               {String(index + 1).padStart(2, "0")}
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Report details */}
         <div className="flex-1 min-w-0 py-1 sm:py-2">
@@ -353,14 +262,14 @@ function FeaturedCard({
           </p>
 
           <div className="flex items-center gap-6">
-            <a
-              href={report.pdfUrl}
-              className="group/dl inline-flex items-center gap-2 text-[13px] font-medium text-black/70 dark:text-white/60 hover:text-hs-red dark:hover:text-hs-red transition-colors"
+            <Link
+              href={`/reports/${report.slug}`}
+              className="group/dl inline-flex items-center gap-2 text-[13px] font-medium text-black/70 dark:text-white/60 hover:text-hs-red dark:hover:text-hs-red transition-colors pr-2"
             >
-              <Download className="w-4 h-4" />
-              Download PDF
+              Read Report
+              <FileText className="w-4 h-4" />
               <ArrowUpRight className="w-3.5 h-3.5 opacity-0 -translate-x-1 group-hover/dl:opacity-100 group-hover/dl:translate-x-0 transition-all duration-200" />
-            </a>
+            </Link>
             <span className="text-[11px] tracking-wide text-black/20 dark:text-white/15">
               {report.readTime} read
             </span>
@@ -389,9 +298,11 @@ function ArchiveRow({
         </span>
 
         <div className="min-w-0">
-          <h3 className="font-slab text-[16px] font-semibold text-black dark:text-white group-hover:text-hs-red dark:group-hover:text-hs-red transition-colors truncate">
-            {report.title}
-          </h3>
+          <Link href={`/reports/${report.slug}`}>
+            <h3 className="font-slab text-[16px] font-semibold text-black dark:text-white group-hover:text-hs-red dark:group-hover:text-hs-red transition-colors truncate">
+              {report.title}
+            </h3>
+          </Link>
           <p className="text-[12px] font-light text-black/35 dark:text-white/25 mt-0.5 truncate">
             {report.summary}
           </p>
@@ -405,15 +316,15 @@ function ArchiveRow({
           {report.date}
         </span>
 
-        <div className="flex justify-end">
-          <a
-            href={report.pdfUrl}
+        <div className="flex justify-end pr-2">
+          <Link
+            href={`/reports/${report.slug}`}
             className="inline-flex items-center gap-1.5 text-[12px] font-medium text-black/40 dark:text-white/30 hover:text-hs-red dark:hover:text-hs-red transition-colors"
-            aria-label={`Download ${report.title} PDF`}
+            aria-label={`Read ${report.title}`}
           >
-            <Download className="w-3.5 h-3.5" />
-            PDF
-          </a>
+            Read
+            <FileText className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
 
@@ -434,22 +345,24 @@ function ArchiveRow({
               </span>
             </div>
 
-            <h3 className="font-slab text-[15px] sm:text-[16px] font-semibold text-black dark:text-white group-hover:text-hs-red dark:group-hover:text-hs-red transition-colors leading-snug mb-1.5">
-              {report.title}
-            </h3>
+            <Link href={`/reports/${report.slug}`}>
+              <h3 className="font-slab text-[15px] sm:text-[16px] font-semibold text-black dark:text-white group-hover:text-hs-red dark:group-hover:text-hs-red transition-colors leading-snug mb-1.5">
+                {report.title}
+              </h3>
+            </Link>
 
             <p className="text-[12px] sm:text-[13px] font-light text-black/35 dark:text-white/25 line-clamp-2 leading-relaxed">
               {report.summary}
             </p>
           </div>
 
-          <a
-            href={report.pdfUrl}
-            className="shrink-0 flex items-center justify-center w-9 h-9 rounded-md text-black/30 dark:text-white/20 hover:text-hs-red hover:bg-hs-red/5 dark:hover:text-hs-red dark:hover:bg-hs-red/10 transition-colors mt-0.5"
-            aria-label={`Download ${report.title} PDF`}
+          <Link
+            href={`/reports/${report.slug}`}
+            className="shrink-0 flex items-center justify-center w-9 h-9 mr-1 rounded-md text-black/30 dark:text-white/20 hover:text-hs-red hover:bg-hs-red/5 dark:hover:text-hs-red dark:hover:bg-hs-red/10 transition-colors mt-0.5"
+            aria-label={`Read ${report.title}`}
           >
-            <Download className="w-4 h-4" />
-          </a>
+            <FileText className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </div>
