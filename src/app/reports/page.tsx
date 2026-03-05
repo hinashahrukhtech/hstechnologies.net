@@ -2,7 +2,8 @@ import Link from "next/link";
 import { ArrowUpRight, ArrowRight, FileText } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { REPORTS } from "@/lib/reports";
+import { REPORTS, getCategories } from "@/lib/reports";
+import { ReportsArchive } from "@/components/reports-archive";
 import type { Report } from "@/lib/reports";
 import type { Metadata } from "next";
 
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function ReportsPage() {
   const featured = REPORTS.filter((r) => r.featured);
-  const archive = REPORTS.filter((r) => !r.featured);
+  const categories = getCategories();
 
   return (
     <>
@@ -24,7 +25,6 @@ export default function ReportsPage() {
 
       {/* ── Hero ── */}
       <section className="relative gradient-dark overflow-hidden">
-        {/* Geometric texture overlay */}
         <div className="absolute inset-0 opacity-[0.03]" aria-hidden="true">
           <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -57,7 +57,6 @@ export default function ReportsPage() {
               </p>
             </div>
 
-            {/* Publication counter */}
             <div className="hidden lg:flex flex-col items-end text-right shrink-0 pb-1">
               <span className="font-slab text-[72px] font-bold leading-none text-white/[0.07]">
                 {String(REPORTS.length).padStart(2, "0")}
@@ -107,28 +106,11 @@ export default function ReportsPage() {
               </h2>
             </div>
             <span className="hidden sm:block text-[12px] tracking-[0.15em] uppercase text-black/25 dark:text-white/20">
-              {archive.length} publications
+              {REPORTS.length} publications
             </span>
           </div>
 
-          {/* Column headers */}
-          <div className="hidden lg:grid grid-cols-[48px_1fr_140px_100px_100px] gap-x-6 pb-3 mb-1 border-b-2 border-black/[0.08] dark:border-white/[0.08]">
-            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">#</span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">Title</span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">Category</span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20">Date</span>
-            <span className="text-[10px] tracking-[0.2em] uppercase text-black/25 dark:text-white/20 text-right">View</span>
-          </div>
-
-          <div>
-            {archive.map((report, i) => (
-              <ArchiveRow
-                key={report.slug}
-                report={report}
-                number={i + 1}
-              />
-            ))}
-          </div>
+          <ReportsArchive reports={REPORTS} categories={categories} />
         </section>
       </main>
 
@@ -200,7 +182,6 @@ function FeaturedCard({
               background: `linear-gradient(160deg, ${accent.from} 0%, ${accent.to} 100%)`,
             }}
           >
-            {/* Subtle grid texture */}
             <div className="absolute inset-0 opacity-[0.04]" aria-hidden="true">
               <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
                 <defs>
@@ -212,10 +193,8 @@ function FeaturedCard({
               </svg>
             </div>
 
-            {/* Accent stripe at top */}
             <div className={`h-[4px] ${accent.stripe}`} />
 
-            {/* Cover content */}
             <div className="relative z-10 flex flex-col justify-between h-full px-5 pt-6 pb-5">
               <div>
                 <span className="block text-[9px] font-semibold tracking-[0.3em] uppercase text-white/40">
@@ -234,7 +213,6 @@ function FeaturedCard({
               </div>
             </div>
 
-            {/* Large ghosted number */}
             <span className="absolute -bottom-3 -right-1 font-slab text-[80px] sm:text-[72px] lg:text-[88px] font-bold leading-none text-white/[0.04] select-none">
               {String(index + 1).padStart(2, "0")}
             </span>
@@ -274,95 +252,6 @@ function FeaturedCard({
               {report.readTime} read
             </span>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ─────────────────────────────── Archive Row ─────────────────────────────── */
-
-function ArchiveRow({
-  report,
-  number,
-}: {
-  report: Report;
-  number: number;
-}) {
-  return (
-    <div className="group border-b border-black/[0.05] dark:border-white/[0.05] last:border-b-0 transition-colors hover:bg-black/[0.015] dark:hover:bg-white/[0.015]">
-      {/* Desktop layout */}
-      <div className="hidden lg:grid grid-cols-[48px_1fr_140px_100px_100px] gap-x-6 items-center py-5">
-        <span className="font-slab text-[15px] font-semibold text-black/15 dark:text-white/10 tabular-nums">
-          {String(number).padStart(2, "0")}
-        </span>
-
-        <div className="min-w-0">
-          <Link href={`/reports/${report.slug}`}>
-            <h3 className="font-slab text-[16px] font-semibold text-black dark:text-white group-hover:text-hs-red dark:group-hover:text-hs-red transition-colors truncate">
-              {report.title}
-            </h3>
-          </Link>
-          <p className="text-[12px] font-light text-black/35 dark:text-white/25 mt-0.5 truncate">
-            {report.summary}
-          </p>
-        </div>
-
-        <span className="text-[11px] font-medium tracking-[0.1em] uppercase text-black/40 dark:text-white/30">
-          {report.category}
-        </span>
-
-        <span className="text-[12px] text-black/35 dark:text-white/25">
-          {report.date}
-        </span>
-
-        <div className="flex justify-end pr-2">
-          <Link
-            href={`/reports/${report.slug}`}
-            className="inline-flex items-center gap-1.5 text-[12px] font-medium text-black/40 dark:text-white/30 hover:text-hs-red dark:hover:text-hs-red transition-colors"
-            aria-label={`Read ${report.title}`}
-          >
-            Read
-            <FileText className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-      </div>
-
-      {/* Mobile / Tablet layout */}
-      <div className="lg:hidden py-5 sm:py-6">
-        <div className="flex items-start gap-4">
-          <span className="font-slab text-[14px] font-semibold text-black/12 dark:text-white/8 tabular-nums pt-0.5 shrink-0">
-            {String(number).padStart(2, "0")}
-          </span>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2.5 mb-1.5">
-              <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-black/35 dark:text-white/25">
-                {report.category}
-              </span>
-              <span className="text-[11px] text-black/25 dark:text-white/18">
-                {report.date}
-              </span>
-            </div>
-
-            <Link href={`/reports/${report.slug}`}>
-              <h3 className="font-slab text-[15px] sm:text-[16px] font-semibold text-black dark:text-white group-hover:text-hs-red dark:group-hover:text-hs-red transition-colors leading-snug mb-1.5">
-                {report.title}
-              </h3>
-            </Link>
-
-            <p className="text-[12px] sm:text-[13px] font-light text-black/35 dark:text-white/25 line-clamp-2 leading-relaxed">
-              {report.summary}
-            </p>
-          </div>
-
-          <Link
-            href={`/reports/${report.slug}`}
-            className="shrink-0 flex items-center justify-center w-9 h-9 mr-1 rounded-md text-black/30 dark:text-white/20 hover:text-hs-red hover:bg-hs-red/5 dark:hover:text-hs-red dark:hover:bg-hs-red/10 transition-colors mt-0.5"
-            aria-label={`Read ${report.title}`}
-          >
-            <FileText className="w-4 h-4" />
-          </Link>
         </div>
       </div>
     </div>

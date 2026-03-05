@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useEffect } from "react";
+import { Suspense, useActionState, useRef, useEffect } from "react";
 import { Send, Phone, Mail, MapPin, Loader2 } from "lucide-react";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -46,7 +46,9 @@ export default function ContactPage() {
               <p className="text-[15px] sm:text-base text-black/50 dark:text-white/40 font-light mb-8">
                 Fill out the form and our team will respond within 24 hours.
               </p>
-              <ContactForm />
+              <Suspense fallback={<ContactFormFallback />}>
+                <ContactForm />
+              </Suspense>
             </div>
 
             {/* Right column: info + map */}
@@ -201,6 +203,20 @@ function ContactForm() {
         )}
       </button>
     </form>
+  );
+}
+
+function ContactFormFallback() {
+  return (
+    <div className="space-y-5 animate-pulse" aria-hidden="true">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="h-11 rounded-md bg-hs-light-gray dark:bg-white/5" />
+        <div className="h-11 rounded-md bg-hs-light-gray dark:bg-white/5" />
+      </div>
+      <div className="h-11 rounded-md bg-hs-light-gray dark:bg-white/5" />
+      <div className="h-[220px] rounded-md bg-hs-light-gray dark:bg-white/5" />
+      <div className="h-11 w-40 rounded-md bg-hs-light-gray dark:bg-white/5" />
+    </div>
   );
 }
 

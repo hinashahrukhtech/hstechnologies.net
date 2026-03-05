@@ -9,6 +9,12 @@ export type Report = {
   content: string;
 };
 
+export function getCategories(): string[] {
+  const seen = new Set<string>();
+  for (const r of REPORTS) seen.add(r.category);
+  return Array.from(seen);
+}
+
 export const REPORTS: Report[] = [
   {
     slug: "digital-transformation-outlook-2026",
@@ -457,7 +463,7 @@ The economic value of closing the readiness gap is substantial: we estimate that
     title: "Enterprise Cloud Migration: A Strategic Guide",
     summary:
       "Practical guidance for mid-to-large enterprises planning cloud migration, covering infrastructure assessment, vendor selection, security considerations, and phased implementation strategies.",
-    category: "Whitepaper",
+    category: "Strategy Guide",
     date: "July 2025",
     readTime: "22 min",
     content: `# Enterprise Cloud Migration: A Strategic Guide
@@ -930,7 +936,7 @@ These measures address the highest-risk vulnerabilities at minimal cost:
     title: "Data-Driven Decision Making in Public Sector",
     summary:
       "Exploring how government agencies and public institutions can adopt data analytics frameworks to improve service delivery, policy formulation, and resource allocation.",
-    category: "Industry Analysis",
+    category: "Policy Brief",
     date: "January 2025",
     readTime: "16 min",
     content: `# Data-Driven Decision Making in Public Sector
